@@ -4,12 +4,9 @@
   "description": "Krishi Sathi static frontend with Vercel serverless backend",
   "main": "api/_app.js",
   "scripts": {
-    "start": "node backend/Server.js",
-    "vercel-build": "echo 'No build required'"
+    "build": "echo 'No build required'",
+    "start": "node backend/Server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.9.0",
