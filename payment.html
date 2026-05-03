@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Payment | Krishi Subsidy Store</title>
+    <meta name="description" content="Complete your order payment for the Krishi Subsidy Store. Choose UPI or COD and submit shipping details.">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" href="templates/css/style.css">
+    <style>
+      .payment-card {
+        max-width: 100%;
+      }
+      .payment-banner {
+        overflow: hidden;
+        border-radius: 20px;
+        margin-bottom: 1.5rem;
+      }
+      .payment-banner img {
+        width: 100%;
+        height: 225px;
+        object-fit: cover;
+      }
+      .payment-banner-content {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 1.25rem 1.5rem;
+        margin-top: -60px;
+        margin-left: 1rem;
+        margin-right: 1rem;
+        border-radius: 18px;
+        box-shadow: 0 14px 32px rgba(0, 0, 0, 0.08);
+      }
+      .payment-radio label {
+        cursor: pointer;
+      }
+      .pay-button {
+        min-width: 160px;
+      }
+      .order-summary {
+        background: rgba(76, 175, 80, 0.08);
+        padding: 20px;
+        border-radius: 12px;
+      }
+      .order-item-thumb {
+        width: 56px;
+        height: 56px;
+        object-fit: cover;
+        border-radius: 12px;
+        margin-right: 12px;
+      }
+      .hidden {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">KRISHI SATHI</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav ms-auto gap-3">
+            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="WEATHER.HTML">Weather</a></li>
+            <li class="nav-item"><a class="nav-link" href="market.html">Market</a></li>
+            <li class="nav-item"><a class="nav-link" href="subsidy.html">Subsidy Store</a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Services</a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li><a class="dropdown-item" href="advisory.html">Advisory</a></li>
+                <li><a class="dropdown-item" href="schemes.html">Schemes</a></li>
+                <li><a class="dropdown-item" href="#">Help</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container py-5">
+      <div class="row gx-4 gy-4">
+        <div class="col-lg-7">
+          <div class="payment-banner">
+            
+            <div class="payment-banner-content">
+              <h2 class="mb-2">Secure Farm Checkout</h2>
+              <p class="mb-0">Review your subsidized order and complete payment for farm essentials safely with UPI or COD.</p>
+            </div>
+          </div>
+          <div class="card p-4 payment-card">
+            <h1>Payment Details</h1>
+            <p class="text-muted">Enter your shipping details and choose a payment method to complete the order.</p>
+
+            <form id="paymentForm">
+              <div class="mb-3">
+                <label class="form-label">Full Name</label>
+                <input type="text" id="customerName" class="form-control" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Phone Number</label>
+                <input type="tel" id="customerPhone" class="form-control" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Address</label>
+                <textarea id="customerAddress" class="form-control" rows="3" required></textarea>
+              </div>
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">City / Village</label>
+                  <input type="text" id="customerCity" class="form-control" required>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">State</label>
+                  <input type="text" id="customerState" class="form-control" required>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Pin Code</label>
+                  <input type="text" id="customerPin" class="form-control" required>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Payment Method</label>
+                <div class="payment-radio">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="paymentMethod" id="paymentCOD" value="cod" checked>
+                    <label class="form-check-label" for="paymentCOD">Cash on Delivery (COD)</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="paymentMethod" id="paymentUPI" value="upi">
+                    <label class="form-check-label" for="paymentUPI">UPI Payment</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-3 hidden" id="upiField">
+                <label class="form-label">UPI ID</label>
+                <input type="text" id="upiId" class="form-control" placeholder="example@oksbi">
+              </div>
+
+              <div class="d-flex gap-3">
+                <button type="submit" class="btn btn-success pay-button">Confirm & Pay</button>
+                <a class="btn btn-outline-secondary pay-button" href="subsidy.html">Back to Store</a>
+              </div>
+            </form>
+
+            <div class="alert alert-info mt-4">
+              <h5>Order Instructions</h5>
+              <p>UPI payment can be completed using your phone after clicking confirm. COD orders can be delivered to the address you provide.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-5">
+          <div class="order-summary">
+            <h2>Order Summary</h2>
+            <div id="orderItems"></div>
+            <hr>
+            <div class="d-flex justify-content-between">
+              <span>Original Total</span><strong id="orderOriginal">₹0</strong>
+            </div>
+            <div class="d-flex justify-content-between">
+              <span>Subsidy Discount</span><strong id="orderDiscount">₹0</strong>
+            </div>
+            <div class="d-flex justify-content-between">
+              <span class="fw-bold">Payable Total</span><strong id="orderTotal">₹0</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      const orderData = JSON.parse(localStorage.getItem('krishiSubsidyCheckout') || 'null');
+      const orderItemsNode = document.getElementById('orderItems');
+      const orderOriginal = document.getElementById('orderOriginal');
+      const orderDiscount = document.getElementById('orderDiscount');
+      const orderTotal = document.getElementById('orderTotal');
+      const paymentForm = document.getElementById('paymentForm');
+      const upiField = document.getElementById('upiField');
+      const paymentUPI = document.getElementById('paymentUPI');
+      const paymentCOD = document.getElementById('paymentCOD');
+
+      function formatCurrency(value) {
+        return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(value);
+      }
+
+      function renderOrder() {
+        if (!orderData || !orderData.items.length) {
+          orderItemsNode.innerHTML = '<p class="text-muted">No items found in your order. Return to the store to add products.</p>';
+          orderOriginal.textContent = formatCurrency(0);
+          orderDiscount.textContent = formatCurrency(0);
+          orderTotal.textContent = formatCurrency(0);
+          return;
+        }
+
+        orderItemsNode.innerHTML = orderData.items.map(item => `
+          <div class="mb-3 d-flex align-items-start gap-3">
+            ${item.image ? `<img src="${item.image}" alt="${item.name}" class="order-item-thumb">` : ''}
+            <div class="w-100">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <strong>${item.name}</strong>
+                  <div class="text-muted small">Qty: ${item.quantity}</div>
+                </div>
+                <strong>${formatCurrency(item.subtotal)}</strong>
+              </div>
+              <div class="text-muted small">Unit: ${formatCurrency(item.unitPrice)}</div>
+            </div>
+          </div>
+        `).join('');
+        orderOriginal.textContent = formatCurrency(orderData.original);
+        orderDiscount.textContent = formatCurrency(orderData.discount);
+        orderTotal.textContent = formatCurrency(orderData.total);
+      }
+
+      function updatePaymentFields() {
+        upiField.classList.toggle('hidden', !paymentUPI.checked);
+      }
+
+      paymentUPI.addEventListener('change', updatePaymentFields);
+      paymentCOD.addEventListener('change', updatePaymentFields);
+      updatePaymentFields();
+
+      paymentForm.addEventListener('submit', event => {
+        event.preventDefault();
+        if (!orderData || !orderData.items.length) {
+          alert('No order found. Please add items to your cart first.');
+          return;
+        }
+
+        const customerName = document.getElementById('customerName').value.trim();
+        const customerPhone = document.getElementById('customerPhone').value.trim();
+        const customerAddress = document.getElementById('customerAddress').value.trim();
+        const customerCity = document.getElementById('customerCity').value.trim();
+        const customerState = document.getElementById('customerState').value.trim();
+        const customerPin = document.getElementById('customerPin').value.trim();
+        const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+
+        if (!customerName || !customerPhone || !customerAddress || !customerCity || !customerState || !customerPin) {
+          alert('Please complete all shipping details.');
+          return;
+        }
+
+        if (paymentMethod === 'upi') {
+          const upiId = document.getElementById('upiId').value.trim();
+          if (!upiId) {
+            alert('Please enter your UPI ID to proceed.');
+            return;
+          }
+        }
+
+        const checkoutResult = {
+          ...orderData,
+          customerName,
+          customerPhone,
+          customerAddress,
+          customerCity,
+          customerState,
+          customerPin,
+          paymentMethod,
+          paymentTimestamp: new Date().toISOString()
+        };
+
+        localStorage.setItem('krishiSubsidyPaymentResult', JSON.stringify(checkoutResult));
+        localStorage.removeItem('krishiSubsidyCart');
+        localStorage.removeItem('krishiSubsidyCheckout');
+
+        window.location.href = 'payment-success.html';
+      });
+
+      renderOrder();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  </body>
+</html>

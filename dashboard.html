@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Krishi Assistant Dashboard</title>
+  <link rel="stylesheet" href="templates/css/dashboard.css" />
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-logo">🌾 Krishi Sathi</div>
+    <ul class="navbar-links">
+      <li><a href="profile.html">Profile</a></li>
+      <li><a href="weather.html">Weather</a></li>
+      <li><a href="#crop-advisory">Advisory</a></li>
+      <li><a href="market.html">Market Prices</a></li>
+      <li><a href="subsidy.html">Subsidy Store</a></li>
+      <li><a href="schemes.html">Schemes</a></li>
+      <li><a href="#alerts">Alerts</a></li>
+      <li><a href="#" id="logoutBtn" onclick="handleLogout(event)">Logout</a></li>
+    </ul>
+  </nav>
+
+  <!-- Header -->
+  <header>
+    <h1>Welcome to Krishi Sathi</h1>
+    <p>Your one-stop solution for all farming needs!</p>
+  </header>
+
+  <!-- User Greeting & Complete Profile Section -->
+  <section class="card" id="user-greeting-section" style="background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%); color: white; margin: 20px;">
+    <div id="greetingContent">
+      <div style="font-size: 1.3em; margin-bottom: 15px;">
+        <strong id="greetingMessage">नमस्ते! 🙏</strong>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; font-size: 0.95em;">
+        <!-- Row 1: Basic Info -->
+        <div>
+          <p style="margin: 8px 0;"><strong>नाम (Name):</strong> <span id="displayUserName">-</span></p>
+          <p style="margin: 8px 0;"><strong>आयु (Age):</strong> <span id="displayUserAge">-</span></p>
+          <p style="margin: 8px 0;"><strong>फोन (Phone):</strong> <span id="displayUserPhone">-</span></p>
+        </div>
+        <div>
+          <p style="margin: 8px 0;"><strong>Farmer ID:</strong> <span id="displayUserId">-</span></p>
+          <p style="margin: 8px 0;"><strong>आधार (Aadhar):</strong> <span id="displayUserAadhar">-</span></p>
+          <p style="margin: 8px 0;"><strong>Gender:</strong> <span id="displayUserGender">-</span></p>
+        </div>
+        <div>
+          <p style="margin: 8px 0;"><strong>Address:</strong> <span id="displayUserAddress">-</span></p>
+          <p style="margin: 8px 0;"><strong>Land Size:</strong> <span id="displayUserLandSize">-</span></p>
+          <p style="margin: 8px 0;"><strong>Farming Type:</strong> <span id="displayUserFarmingType">-</span></p>
+        </div>
+        <!-- Row 2: Farming Details -->
+        <div>
+          <p style="margin: 8px 0;"><strong>Crops Grown:</strong> <span id="displayUserCrops">-</span></p>
+          <p style="margin: 8px 0;"><strong>Livestock:</strong> <span id="displayUserLivestock">-</span></p>
+          <p style="margin: 8px 0;"><strong>Bank Linked:</strong> <span id="displayUserBankLinked">-</span></p>
+        </div>
+        <!-- Row 3: Input & Resources -->
+        <div>
+          <p style="margin: 8px 0;"><strong>Fertilizers:</strong> <span id="displayUserFertilizers">-</span></p>
+          <p style="margin: 8px 0;"><strong>Pesticides:</strong> <span id="displayUserPesticides">-</span></p>
+          <p style="margin: 8px 0;"><strong>Organic Practices:</strong> <span id="displayUserOrganicPractices">-</span></p>
+        </div>
+        <!-- Row 4: Loan & Equipment -->
+        <div>
+          <p style="margin: 8px 0;"><strong>Loan Details:</strong> <span id="displayUserLoanDetails">-</span></p>
+          <p style="margin: 8px 0;"><strong>Machinery:</strong> <span id="displayUserMachinery">-</span></p>
+          <p style="margin: 8px 0; color: #e8f5e9;">
+            📝 <a href="profile.html" style="color: #ffd54f; text-decoration: none; font-weight: bold;">Edit Profile</a>
+            &nbsp;|&nbsp;
+            <button id="refreshProfileBtn" style="background: #fff; color: #2e7d32; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; font-weight: bold;">⟳ Refresh</button>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="card" id="weather">
+    <h2>☀️ Weather Update</h2>
+    <form id="weather-location-form" style="margin-bottom:10px;">
+      <input type="text" id="weather-location-input" placeholder="Enter city or village" class="form-control" style="max-width:250px;display:inline-block;" />
+      <button type="submit" class="btn btn-primary btn-sm">Get Weather</button>
+      <button type="button" class="btn btn-secondary btn-sm" id="weather-geolocate">Use My Location</button>
+    </form>
+    <div id="weatherData"><div class="spinner"></div></div>
+  </section>
+
+  <!-- Crop Advisory -->
+  <section class="card" id="crop-advisory">
+    <h2>🌱 Crop Advisory</h2>
+    <ul>
+      <li>Plant paddy in lowland areas</li>
+      <li>Use organic compost for better yield</li>
+    </ul>
+  </section>
+
+  <!-- Market Prices -->
+  <section class="card" id="market-prices">
+    <h2>📈 Market Prices</h2>
+    <table>
+      <tr><th>Crop</th><th>Price (₹/quintal)</th></tr>
+      <tr><td>Wheat</td><td>2150</td></tr>
+      <tr><td>Rice</td><td>1950</td></tr>
+    </table>
+  </section>
+
+  <!-- Schemes -->
+  <section class="card" id="schemes">
+    <h2>🏛️ Govt. Schemes</h2>
+    <ul>
+      <li>PM-KISAN: ₹6000 per year – <a href="#">Apply</a></li>
+      <li>Crop Insurance Scheme – <a href="#">Check status</a></li>
+    </ul>
+  </section>
+
+  <!-- Alerts -->
+  <section class="card" id="alerts">
+    <h2>🚨 Alerts</h2>
+    <p>No pest alerts in your area.</p>
+  </section>
+
+  <!-- Interactive Calendar -->
+  <section class="card" id="calendar">
+    <h2>📅 Upcoming Tasks</h2>
+    <div id="calendar-container">
+      <div id="calendar-header">
+        <button id="prev-month">&lt;</button>
+        <h3 id="month-year"></h3>
+        <button id="next-month">&gt;</button>
+      </div>
+      <table id="calendar-table">
+        <thead>
+          <tr>
+            <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>
+          </tr>
+        </thead>
+        <tbody id="calendar-body"></tbody>
+      </table>
+    </div>
+    <div id="task-form" style="margin-top:15px;">
+      <input type="date" id="task-date" />
+      <input type="text" id="task-text" placeholder="Add a task" />
+      <button id="add-task">Add Task</button>
+    </div>
+    <ul id="task-list"></ul>
+  </section>
+
+  <!-- Real-time News Fetcher -->
+  <section class="card" id="news">
+    <h2>📰 Latest Agricultural News</h2>
+    <ul id="news-list"><li>Loading news...</li></ul>
+  </section>
+
+  <!-- Soil Health Report -->
+<section class="card" id="soil-health">
+  <h2>🌿 Soil Health Report</h2>
+  <p>pH Level: <span id="soilPh">Loading...</span></p>
+  <p>Organic Matter: <span id="organicMatter">Loading...</span></p>
+  <p>Recommendations: <span id="soilRecommendations">Loading...</span></p>
+</section>
+
+<!-- Pest Alerts -->
+<section class="card" id="pest-alerts">
+  <h2>🐞 Pest Alerts</h2>
+  <ul id="pestList">
+    <li>No current pest alerts in your area.</li>
+  </ul>
+</section>
+
+<!-- Farming Tips -->
+<section class="card" id="farming-tips">
+  <h2>🌾 Farming Tips</h2>
+  <ul>
+    <li>Rotate crops to maintain soil fertility.</li>
+    <li>Use drip irrigation to save water.</li>
+    <li>Plant native varieties for better resistance.</li>
+  </ul>
+</section>
+
+<!-- Government Support -->
+<section class="card" id="gov-support">
+  <h2>🏛️ Government Support & Subsidies</h2>
+  <ul>
+    <li>PM-KISAN: ₹6000 per year - <a href="#">Apply Now</a></li>
+    <li>Crop Insurance: Check your status - <a href="#">Here</a></li>
+    <li>Soil Health Card Scheme - <a href="#">More Info</a></li>
+  </ul>
+</section>
+
+
+  <footer>
+    <p>© 2025 Krishi Assistant | Designed for Indian Farmers 🇮🇳</p>
+  </footer>
+
+  <!-- External JS -->
+  <script src="js/dashboard.js"></script>
+  <script>
+// Logout handler
+function handleLogout(event) {
+  event.preventDefault();
+  if (confirm('Are you sure you want to logout?')) {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('user');
+    localStorage.removeItem('farmerProfile');
+    window.location.href = 'login.html';
+  }
+}
+
+async function fetchWeather(lat, lon, placeName) {
+  const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=Asia/Kolkata`;
+  const weatherDiv = document.getElementById('weatherData');
+  weatherDiv.innerHTML = '<div class="spinner"></div>';
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    const current = data.current;
+    const weatherCodes = {
+      0: "Clear sky ☀️", 1: "Mainly clear 🌤️", 2: "Partly cloudy ⛅", 3: "Overcast ☁️",
+      45: "Fog 🌫️", 48: "Rime fog 🌫️", 51: "Light drizzle 🌦️", 53: "Drizzle 🌦️", 55: "Dense drizzle 🌧️",
+      61: "Slight rain 🌦️", 63: "Rain 🌧️", 65: "Heavy rain 🌧️", 80: "Slight showers 🌦️", 81: "Showers 🌦️", 82: "Violent showers 🌧️", 95: "Thunderstorm ⛈️"
+    };
+    weatherDiv.innerHTML = `
+      <strong>Location:</strong> ${placeName}<br>
+      <strong>Temperature:</strong> ${current.temperature_2m}°C<br>
+      <strong>Condition:</strong> ${weatherCodes[current.weather_code] || "Unknown"}<br>
+      <strong>Humidity:</strong> ${current.relative_humidity_2m}%<br>
+      <strong>Wind:</strong> ${current.wind_speed_10m} km/h
+    `;
+  } catch {
+    weatherDiv.innerHTML = '<span class="text-danger">Could not fetch weather data.</span>';
+  }
+}
+
+async function fetchWeatherByLocationName(location) {
+  const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(location)}&count=1&language=en&format=json`;
+  const weatherDiv = document.getElementById('weatherData');
+  weatherDiv.innerHTML = '<div class="spinner"></div>';
+  try {
+    const geoRes = await fetch(geoUrl);
+    const geoData = await geoRes.json();
+    if (!geoData.results || geoData.results.length === 0) {
+      weatherDiv.innerHTML = '<span class="text-danger">Location not found.</span>';
+      return;
+    }
+    const place = geoData.results[0];
+    fetchWeather(place.latitude, place.longitude, `${place.name}${place.admin1 ? ', ' + place.admin1 : ''}${place.country ? ', ' + place.country : ''}`);
+  } catch {
+    weatherDiv.innerHTML = '<span class="text-danger">Could not fetch location data.</span>';
+  }
+}
+
+document.getElementById('weather-location-form').onsubmit = function(e) {
+  e.preventDefault();
+  const location = document.getElementById('weather-location-input').value.trim();
+  if (location) fetchWeatherByLocationName(location);
+};
+
+document.getElementById('weather-geolocate').onclick = function() {
+  const weatherDiv = document.getElementById('weatherData');
+  weatherDiv.innerHTML = '<div class="spinner"></div>';
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const lat = pos.coords.latitude, lon = pos.coords.longitude;
+        // Reverse geocode to get location name
+        const geoUrl = `https://geocoding-api.open-meteo.com/v1/reverse?latitude=${lat}&longitude=${lon}&language=en&format=json`;
+        try {
+          const geoRes = await fetch(geoUrl);
+          const geoData = await geoRes.json();
+          let placeName = "Your Location";
+          if (geoData.results && geoData.results.length > 0) {
+            const place = geoData.results[0];
+            placeName = `${place.name}${place.admin1 ? ', ' + place.admin1 : ''}${place.country ? ', ' + place.country : ''}`;
+          }
+          fetchWeather(lat, lon, placeName);
+        } catch {
+          fetchWeather(lat, lon, "Your Location");
+        }
+      },
+      () => {
+        weatherDiv.innerHTML = '<span class="text-danger">Location access denied.</span>';
+      }
+    );
+  } else {
+    weatherDiv.innerHTML = '<span class="text-danger">Geolocation not supported.</span>';
+  }
+};
+
+// Optionally, show weather for user's location on page load
+document.getElementById('weather-geolocate').click();
+</script>
+</body>
+</html>
