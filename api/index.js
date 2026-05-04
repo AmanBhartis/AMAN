@@ -12,9 +12,16 @@ const farmRoutes = require("../backend/routes/farm");
 
 const app = express();
 
+// Middleware
 app.use(cors({ origin: true }));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
+
+// Request logging
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
+  next();
+});
 
 let db = null;
 let connectingPromise = null;
@@ -54,14 +61,28 @@ async function connectDatabase() {
 const useInMemoryDb = process.env.USE_IN_MEMORY_DB === "true";
 app.locals.useInMemoryDb = () => useInMemoryDb;
 
+// Health check
 app.get("/api/healthz", (_req, res) => {
+  res.set('Content-Type', 'application/json');
   res.json({ ok: true, message: "KRISHI backend running ✅" });
 });
 
+// Mount routes
 app.use("/api/auth", authRoutes);
 app.use("/api/farm", farmRoutes);
 
-// Initialize database on startup
+// Error handler
+app.use((err, req, res, next) => {
+  console.error("Error:", err);
+  res.status(500).json({ error: err.message || "Internal Server Error" });
+});
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({ error: "Route not found: " + req.path });
+});
+
+// Initialize database
 connectDatabase().catch((err) => {
   console.error("Database initialization error:", err);
 });
