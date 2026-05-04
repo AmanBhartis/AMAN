@@ -50,6 +50,11 @@ const farmRoutes = require("./routes/farm");
 app.use("/auth", authRoutes);
 app.use("/farm", farmRoutes);
 
+// alias routes for local development to match deployed /api/* paths
+app.use("/api/auth", authRoutes);
+app.use("/api/farm", farmRoutes);
+app.get("/api/healthz", (_req, res) => res.json({ ok: true, message: "KRISHI backend running ✅" }));
+
 async function startServer() {
   if (typeof authRoutes.seedDemoFarmer === "function") {
     await authRoutes.seedDemoFarmer(app);
