@@ -1,8 +1,8 @@
 {
   "name": "krishi-sathi",
   "version": "1.0.0",
-  "description": "Krishi Sathi static frontend with Vercel serverless backend",
-  "main": "api/_app.js",
+  "description": "Krishi Sathi static frontend",
+  "main": "backend/Server.js",
   "scripts": {
     "build": "echo 'No build required'",
     "start": "node backend/Server.js"
@@ -17,7 +17,7 @@
     "mongoose": "^8.5.0",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.11",
-    "serverless-http": "^2.7.0",
+
     "streamifier": "^0.1.1"
   }
 }
