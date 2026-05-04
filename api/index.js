@@ -2,7 +2,6 @@ const serverless = require("serverless-http");
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const cloudinary = require("cloudinary").v2;
 const dotenv = require("dotenv");
 
 dotenv.config({ path: require('path').join(__dirname, '../.env') });
@@ -15,12 +14,6 @@ const app = express();
 app.use(cors({ origin: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || "",
-  api_key: process.env.CLOUDINARY_API_KEY || "",
-  api_secret: process.env.CLOUDINARY_API_SECRET || "",
-});
 
 let db = null;
 

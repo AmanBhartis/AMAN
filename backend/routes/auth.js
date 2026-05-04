@@ -2,8 +2,6 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
-const streamifier = require("streamifier");
-const cloudinary = require("cloudinary").v2;
 const Farmer = require("../models/farmer");
 
 const router = express.Router();
@@ -60,21 +58,10 @@ function generateToken(farmer) {
   );
 }
 
-// configure multer to keep file in memory
+// configure multer to keep file in memory (but we won't use it)
 const upload = multer({ storage: multer.memoryStorage() });
 
-// helper to upload a buffer to Cloudinary
-function uploadBufferToCloudinary(buffer, folder = "krishi/farmers") {
-  return new Promise((resolve, reject) => {
-    const stream = cloudinary.uploader.upload_stream(
-      { folder },
-      (error, result) => (error ? reject(error) : resolve(result))
-    );
-    streamifier.createReadStream(buffer).pipe(stream);
-  });
-}
-
-// signup route - direct registration without OTP
+// signup route - direct registration without OTP and without photo upload
 router.post("/signup", upload.single("photo"), async (req, res) => {
   try {
     const { name, age, phone, aadhaar, email, password, confirmPassword } = req.body;
@@ -103,14 +90,7 @@ router.post("/signup", upload.single("photo"), async (req, res) => {
     // Hash password
     const hashed = await bcrypt.hash(password, 10);
 
-    // Upload photo if provided
-    let photoUrl = null;
-    if (req.file && req.file.buffer) {
-      const up = await uploadBufferToCloudinary(req.file.buffer);
-      photoUrl = up.secure_url;
-    }
-
-    // Create farmer account
+    // Create farmer account (without photo upload)
     const farmer = await createFarmer({
       name,
       age,
@@ -119,7 +99,7 @@ router.post("/signup", upload.single("photo"), async (req, res) => {
       email,
       emailVerified: true,
       password: hashed,
-      photoUrl,
+      photoUrl: null,
     }, req.app);
 
     // Generate JWT token

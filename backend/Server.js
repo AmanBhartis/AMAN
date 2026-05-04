@@ -3,8 +3,6 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const multer = require("multer");
-const streamifier = require("streamifier");
-const cloudinary = require("cloudinary").v2;
 require("dotenv").config();
 
 const Farmer = require("./models/farmer");
@@ -18,17 +16,7 @@ const allowedOrigin = process.env.ALLOWED_ORIGIN || "*";
 app.use(cors({ origin: allowedOrigin }));
 app.use(express.json());
 
-// Cloudinary setup
-if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
-  console.warn("⚠️ Cloudinary credentials are not fully set, image uploads will fail");
-}
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key:    process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
-// Multer: keep files in memory and stream to Cloudinary
+// Multer: keep files in memory
 const upload = multer({ storage: multer.memoryStorage() });
 
 // MongoDB connection
@@ -52,17 +40,6 @@ async function connectDatabase() {
 
 // expose flag and shared in-memory storage for routes
 app.locals.useInMemoryDb = () => useInMemoryDb;
-
-// Helper to upload a buffer to Cloudinary
-function uploadBufferToCloudinary(buffer, folder = "krishi/farmers") {
-  return new Promise((resolve, reject) => {
-    const stream = cloudinary.uploader.upload_stream(
-      { folder },
-      (error, result) => (error ? reject(error) : resolve(result))
-    );
-    streamifier.createReadStream(buffer).pipe(stream);
-  });
-}
 
 // Health check
 app.get("/", (_req, res) => res.send("KRISHI backend running ✅"));
