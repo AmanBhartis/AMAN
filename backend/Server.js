@@ -41,6 +41,17 @@ async function connectDatabase() {
 // expose flag and shared in-memory storage for routes
 app.locals.useInMemoryDb = () => useInMemoryDb;
 
+// Lazy DB connection middleware for Vercel
+let isInitialized = false;
+app.use(async (req, res, next) => {
+  if (!isInitialized) {
+    isInitialized = true;
+    await connectDatabase();
+    // try to seed demo farmer if authRoutes is loaded later, we will handle it below
+  }
+  next();
+});
+
 // Health check
 app.get("/", (_req, res) => res.send("KRISHI backend running ✅"));
 
@@ -55,21 +66,16 @@ app.use("/api/auth", authRoutes);
 app.use("/api/farm", farmRoutes);
 app.get("/api/healthz", (_req, res) => res.json({ ok: true, message: "KRISHI backend running ✅" }));
 
-async function startServer() {
-  if (typeof authRoutes.seedDemoFarmer === "function") {
-    await authRoutes.seedDemoFarmer(app);
+module.exports = app;
+
+if (require.main === module) {
+  async function startLocal() {
+    await connectDatabase();
+    if (typeof authRoutes.seedDemoFarmer === "function") {
+      await authRoutes.seedDemoFarmer(app);
+    }
+    const PORT = process.env.PORT || 10000;
+    app.listen(PORT, "0.0.0.0", () => console.log(`🚀 Server on port ${PORT} host 0.0.0.0`));
   }
-
-  const PORT = process.env.PORT || 10000; // Render supplies PORT automatically
-  app.listen(PORT, "0.0.0.0", () => console.log(`🚀 Server on port ${PORT} host 0.0.0.0`));
+  startLocal().catch(console.error);
 }
-
-async function initializeApp() {
-  await connectDatabase();
-  await startServer();
-}
-
-initializeApp().catch((err) => {
-  console.error("❌ Failed to initialize app:", err);
-  process.exit(1);
-});
